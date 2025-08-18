@@ -1,4 +1,5 @@
 local Bridge = exports['community_bridge']:Bridge()
+local lastAppearance = nil
 
 --- @return nil
 --- @description Updates the player's stats and sends them to the NUI frame
@@ -34,6 +35,8 @@ function UpdatePlayerStatus()
     if Config.ShowMinimapAlways then
         ToggleMinimapVisibility('show')
     end
+
+    UpdatePlayerMugshot()
 
     local playerStats = {
       health = health,
@@ -177,6 +180,18 @@ function TakePlayerMugshot()
   else
     print("Mugshot is empty, not sending to NUI")
   end
+end
+
+--- @return nil
+--- @description Checks if the player's appearance has changed and if so updates the mugshot
+function UpdatePlayerMugshot()
+    local appearance = Bridge.Clothing.GetAppearance(source)
+    if lastAppearance == nil or json.encode(appearance) ~= json.encode(lastAppearance) then
+      TakePlayerMugshot()
+      lastAppearance = appearance
+    else
+      return
+    end
 end
 
 ---@param vehicle integer

@@ -1,9 +1,9 @@
 fx_version "cerulean"
 
-description "A world of warcraft inspired player and vehicle HUD"
+description "An MMO inspired HUD"
 author "solaire"
 version '1.0.0'
-repository ''
+repository 'https://github.com/solaire-fivem/solaire-hud'
 
 lua54 'yes'
 
@@ -26,4 +26,9 @@ client_scripts {
 files {
 	'web/build/index.html',
 	'web/build/**/*',
+}
+
+dependencies {
+  'community_bridge',
+  'MugShotBase64',
 }
