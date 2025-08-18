@@ -179,18 +179,6 @@ function TakePlayerMugshot()
   end
 end
 
---- @return nil
---- @description Checks if the player's appearance has changed and if so updates the mugshot
-function UpdatePlayerMugshot()
-    local appearance = Bridge.Clothing.GetAppearance(source)
-    if lastAppearance == nil or json.encode(appearance) ~= json.encode(lastAppearance) then
-      TakePlayerMugshot()
-      lastAppearance = appearance
-    else
-      return
-    end
-end
-
 ---@param vehicle integer
 ---@return integer
 ---@description Gets the current speed of the vehicle, change the speed measurement in the config if needed
