@@ -26,8 +26,13 @@ _Thank you very much to the creators of these scripts you are absolute legends â
 [InteractSound](https://github.com/plunkettscott/interact-sound) - **Optional:** used to play the seatbelt sound when putting on or removing the seatbelt
 
 ## Installation
-1. Download the HUD from the **releases** section
+1. Download the latest HUD from the [releases](https://github.com/solaire-fivem/solaire-hud/releases/tag/1.0.0) section
 2. Place the folder into your resources directory and ensure the script is set to start in your `server.cfg`
+
+## Want to Style it more to your liking?
+1. Download the source code and open up the `web` folder in your terminal of choice
+2. Run the command `npm run start:game` to allow for your changes to be updated when you restart the resource
+3. Run the command `npm run start` to view the UI in your browser for easier editing and hot reloading on file changes
 
 ## Attributions
 [Project Error's FiveM React Boilerplate](https://github.com/project-error/fivem-react-boilerplate-lua?tab=readme-ov-file)
