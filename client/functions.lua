@@ -1,5 +1,4 @@
 local Bridge = exports['community_bridge']:Bridge()
-local lastAppearance = nil
 
 --- @return nil
 --- @description Updates the player's stats and sends them to the NUI frame
@@ -15,9 +14,9 @@ function UpdatePlayerStatus()
     local health = GetEntityHealth(ped) - 100
     local armor = GetPedArmour(ped)
     local stamina = math.floor(GetPlayerStamina(PlayerId()))
-    local hunger = math.floor(Bridge.Framework.GetPlayerMetaData('hunger'))
-    local thirst = math.floor(Bridge.Framework.GetPlayerMetaData('thirst'))
-    local stress = math.floor(Bridge.Framework.GetPlayerMetaData('stress'))
+    local hunger = Bridge.Framework.GetPlayerMetaData('hunger')
+    local thirst = Bridge.Framework.GetPlayerMetaData('thirst')
+    local stress = Bridge.Framework.GetPlayerMetaData('stress')
     local oxygenPercent = 100
 
     if IsPedSwimmingUnderWater(ped) then
@@ -35,8 +34,6 @@ function UpdatePlayerStatus()
     if Config.ShowMinimapAlways then
         ToggleMinimapVisibility('show')
     end
-
-    UpdatePlayerMugshot()
 
     local playerStats = {
       health = health,
