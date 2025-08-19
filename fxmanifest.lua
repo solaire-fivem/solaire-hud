@@ -7,19 +7,16 @@ repository 'https://github.com/solaire-fivem/solaire-hud'
 
 lua54 'yes'
 
-games {
-  "gta5",
-}
+game "gta5"
 
 ui_page 'web/build/index.html'
 
 shared_script "config.lua"
 
 client_scripts {
-    "client/functions.lua",
-    "client/client.lua",
-    "client/utils.lua",
-    "client/events.lua",
+    "client/*",
+    "functions/*",
+    "bridge/shared.lua",
 }
 
 files {

@@ -4,7 +4,7 @@ import { VehicleSpeedDisplayProps } from "../../types/vehiclehud";
 const VehicleSpeedDisplay: React.FC<VehicleSpeedDisplayProps> = ({ speed, unit = 'MPH', inVehicle = false }) => {
     if (!inVehicle) return null;
     return (
-        <div className="fixed bottom-4 right-4 z-50 flex items-center justify-center opacity-90">
+        <div className="fixed bottom-7 right-4 z-50 flex items-center justify-center opacity-90">
             <svg width={140} height={140} viewBox="0 0 120 120">
                 <circle
                     cx="60"
