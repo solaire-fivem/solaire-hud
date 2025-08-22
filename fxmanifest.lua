@@ -14,9 +14,10 @@ ui_page 'web/build/index.html'
 shared_script "config.lua"
 
 client_scripts {
-    "client/*",
-    "functions/*",
-    "bridge/shared.lua",
+  "client/*",
+  "functions/*",
+  "bridge/frameworks/*",
+  "bridge/shared.lua",
 }
 
 files {

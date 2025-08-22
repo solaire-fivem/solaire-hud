@@ -1,11 +1,13 @@
 DisplayRadar(false)
 
-RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
-  CreateThread(function()
-    while true do
-      Wait(500)
-      UpdatePlayerStatus()
-      UpdateVehicleHud()
+CreateThread(function()
+    while not PlayerLoaded do
+        Wait(500)
     end
-  end)
+
+    while true do
+        UpdatePlayerStatus()
+        UpdateVehicleHud()
+        Wait(500) 
+    end
 end)

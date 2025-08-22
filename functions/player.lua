@@ -11,10 +11,12 @@ function UpdatePlayerStatus()
     local health = GetEntityHealth(ped) - 100
     local armor = GetPedArmour(ped)
     local stamina = math.floor(GetPlayerStamina(PlayerId()))
-    local hunger = Bridge.Framework.GetPlayerMetaData('hunger')
-    local thirst = Bridge.Framework.GetPlayerMetaData('thirst')
-    local stress = Bridge.Framework.GetPlayerMetaData('stress')
     local oxygenPercent = 100
+
+    local playerStatus = RetrievePlayerStatusFromFramework()
+    local hunger = playerStatus.hunger
+    local thirst = playerStatus.thirst
+    local stress = playerStatus.stress
 
     if IsPedSwimmingUnderWater(ped) then
       oxygenPercent = CalculateUnderwaterOxygen()
