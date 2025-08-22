@@ -47,7 +47,7 @@ ensure solaire-hud
 ## FiveM Database Seal Of Approval 
 
 
-### Solair As a creator has been awarded the 5DB Seal of Approval. 
+### Solaire As a creator has been awarded the 5DB Seal of Approval. 
 
 [Check there Seal Of Approval Out](https://fivemdb.net/soa/solaire)
 
