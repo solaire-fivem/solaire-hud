@@ -16,8 +16,7 @@ shared_script "config.lua"
 client_scripts {
   "client/*",
   "functions/*",
-  "bridge/frameworks/*",
-  "bridge/shared.lua",
+  "bridge.lua",
 }
 
 files {
