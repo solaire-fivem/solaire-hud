@@ -15,19 +15,25 @@ _A MMO inspired FiveM Hud_
 </details>
 
 ## Supported Frameworks
-- QBcore
-- QBox
-- ESX
+- [QBcore](https://github.com/qbcore-framework/qb-core)
+- [QBox](https://github.com/Qbox-project/qbx_core)
+- [ESX](https://github.com/esx-framework/esx_core)
   
 ## Dependencies
 _Thank you very much to the creators of these scripts you are absolute legends ♥️_<br><br>
 [MugShotBase64](https://github.com/BaziForYou/MugShotBase64) - Used to display the player mugshot in the top left <br>
+
 [Community Bridge](https://github.com/TheOrderFivem/community_bridge) - Used to enable cross framework compatibility <br>
+
 [InteractSound](https://github.com/plunkettscott/interact-sound) - **Optional:** used to play the seatbelt sound when putting on or removing the seatbelt
 
 ## Installation
 1. Download the latest HUD from the [releases](https://github.com/solaire-fivem/solaire-hud/releases/tag/1.0.0) section
-2. Place the folder into your resources directory and ensure the script is set to start in your `server.cfg`
+2. place the **resource folder** Into youre resources Directory on you're FiveM Server.
+3. Ensure the resource in you're server.cfg
+```
+ensure solaire-hud
+```
 
 ## Want to Style it more to your liking?
 1. Download the source code and open up the `web` folder in your terminal of choice
@@ -36,3 +42,15 @@ _Thank you very much to the creators of these scripts you are absolute legends �
 
 ## Attributions
 [Project Error's FiveM React Boilerplate](https://github.com/project-error/fivem-react-boilerplate-lua?tab=readme-ov-file)
+
+---
+## FiveM Database Seal Of Approval 
+
+
+### Solair As a creator has been awarded the 5DB Seal of Approval. 
+
+[Check there Seal Of Approval Out](https://fivemdb.net/soa/solaire)
+
+<a href="https://fivemdb.net/soa/solaire">
+  <img width="240" height="240" alt="2" src="https://zwrks.com/cdn/FiveMDB/soa.png" />
+</a>
