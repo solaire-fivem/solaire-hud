@@ -17,10 +17,6 @@ if (import.meta.env.MODE === "development") { // If we are in the browser let's 
         action: "setVisible",
         data: true,
       },
-      { 
-        action: "setEditMode", 
-        data: { editMode: true }
-      }
     ],
     100
   );
