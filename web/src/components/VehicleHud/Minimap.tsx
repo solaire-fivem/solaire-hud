@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useNuiEvent } from "../../hooks/useNuiEvent";
 import SeatbeltIcon from "./SeatbeltIcon";
 import FuelIcon from "./FuelIcon";
+import { MinimapProps } from "../../types/minimapprops";
 
-const Minimap: React.FC = () => {
+const Minimap: React.FC<MinimapProps> = ({ forceShow = false }) => {
   const [displayMinimap, setDisplayMinimap] = useState<boolean>(false);
   const [streetName, setStreetName] = useState<string>("");
   const [currentTime, setCurrentTime] = useState<string>("");
@@ -27,14 +28,11 @@ const Minimap: React.FC = () => {
     if (data.inVehicle !== undefined) setInVehicle(data.inVehicle);
   });
 
-  if (!displayMinimap) return null;
+  if (!displayMinimap && !forceShow) return null;
 
   return (
     <div
       style={{
-        position: "fixed",
-        left: "38px",
-        bottom: "76px",
         width: "300px",
         height: "245px",
         pointerEvents: "none",
@@ -54,7 +52,7 @@ const Minimap: React.FC = () => {
         }}
       >
 
-        {inVehicle && (
+        {(inVehicle || forceShow) && (
           <>
             <SeatbeltIcon isSeatbeltOn={isSeatbeltOn} />
             <FuelIcon fuelLevel={fuelLevel} />
@@ -109,11 +107,11 @@ const Minimap: React.FC = () => {
           boxShadow: "0 0 2px 2px #ab8e2cff, 0 0 4px 2px #ab8e2c88, 0 0 8px 4px #111827",
         }}
       >
-        {currentTime}
+        {currentTime || (forceShow ? "12:00 PM" : "")}
       </div>
 
       {/* Street name */}
-      {streetName && streetName.trim() !== "" && (
+      {((streetName && streetName.trim() !== "") || forceShow) && (
         <div
           style={{
             position: "absolute",
@@ -132,7 +130,7 @@ const Minimap: React.FC = () => {
             boxShadow: "0 0 2px 2px #ab8e2cff, 0 0 4px 2px #ab8e2c88, 0 0 8px 4px #111827",
           }}
         >
-          {streetName}
+          {streetName || (forceShow ? "Preview Street" : "")}
         </div>
       )}
       

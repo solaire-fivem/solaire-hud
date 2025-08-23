@@ -67,7 +67,7 @@ const PlayerStatusHud: React.FC = () => {
       </div>
 
       {/* Status bars container */}
-      <div className="bg-gray-900 bg-opacity-80 rounded-lg flex flex-col overflow-hidden w-64 mt-8 -ml-3 hud-glow">
+      <div className="bg-gray-900 bg-opacity-80 rounded-lg flex flex-col overflow-hidden w-64 -ml-3 hud-glow">
         <PlayerName />
 
         <HealthBar 

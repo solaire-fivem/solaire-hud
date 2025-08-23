@@ -16,7 +16,7 @@ const PlayerIconContainer: React.FC = () => {
   });
 
   return (
-    <div className="relative ml-4" style={{ width: 96, height: 96 }}>
+    <div className="relative" style={{ width: 96, height: 96 }}>
       <Mugshot mugshot={mugshot} />
       <ArmorIcon armor={armor} />
       <OxygenFill oxygen={oxygen} />

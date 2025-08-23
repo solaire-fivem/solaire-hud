@@ -5,6 +5,7 @@ RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
   CreateMinimap()
   GetPlayerName()
   SendIconConfigs()
+  SendSavedPositions()
   SendReactMessage('setVisible', true)
   TakePlayerMugshot()
 
@@ -22,4 +23,19 @@ RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
     TakePlayerMugshot()
   end)
 
+end)
+
+RegisterNUICallback('savePositions', function(data, cb)
+  SaveHudPositions(data)
+  cb('ok')
+end)
+
+RegisterNUICallback('closeEditMode', function(data, cb)
+  ToggleHudEditMode()
+  cb('ok')
+end)
+
+RegisterNUICallback('resetPositions', function(data, cb)
+  ResetHudPositions()
+  cb('ok')
 end)
