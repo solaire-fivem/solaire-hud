@@ -4,6 +4,7 @@ RegisterCommand('toggleminimap', function()
     DisplayMinimap(Config.ShowMinimapAlways)
 end, false)
 
+--- @description Command to update the player's mugshot
 RegisterCommand('updatemugshot', function()
     TakePlayerMugshot()
 end, false)
