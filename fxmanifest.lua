@@ -2,7 +2,7 @@ fx_version "cerulean"
 
 description "An MMO inspired HUD"
 author "solaire"
-version '1.0.0'
+version '1.1.0'
 repository 'https://github.com/solaire-fivem/solaire-hud'
 
 lua54 'yes'
