@@ -28,7 +28,9 @@ function UpdatePlayerStatus()
         DisplayMinimap(false)
     end
 
-    local playerStats = {
+    --- @type table
+    --- @description Table containing the player's current status
+    local playerStatus = {
       health = health,
       armor = armor,
       stamina = stamina,
@@ -38,7 +40,7 @@ function UpdatePlayerStatus()
       oxygen = oxygenPercent,
     }
 
-    SendReactMessage('updatePlayerStats', playerStats)
+    SendReactMessage('updatePlayerStats', playerStatus)
 end
 
 --- @return number
@@ -67,7 +69,7 @@ end
 --- @return nil
 --- @description Takes a mugshot of the player and sends it to the NUI frame
 function TakePlayerMugshot()
-  local mugShot = exports["MugShotBase64"]:GetMugShotBase64(PlayerPedId(), true)
+  local mugShot = exports["MugShotBase64"]:GetMugShotBase64(PlayerPedId(), false)
 
   if mugShot and mugShot ~= "" then
     SendReactMessage('setPlayerMugshot', mugShot)

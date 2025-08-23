@@ -1,3 +1,4 @@
+--- @type boolean Flag used to detect if we have created the cache already
 local cacheCreated = false
 
 RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
@@ -5,7 +6,6 @@ RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
   GetPlayerName()
   SendIconConfigs()
   SendReactMessage('setVisible', true)
-  Wait(1000) -- Wait a moment to ensure NUI is fully loaded before taking player mugshot (Avoids an issue where Michael is shown instead of the player)
   TakePlayerMugshot()
 
   if cacheCreated then
@@ -14,15 +14,11 @@ RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
 
   cacheCreated = true
 
-  Bridge.Cache.Create( -- Create the cache for the player appearance
-    "appearance",
-    function()
-      return Bridge.Clothing.GetAppearance(PlayerPedId())
-    end,
-    5000 -- Check every 5 seconds
-  )
-
-  Bridge.Cache.OnChange('appearance', function() -- When we detect a change update the mugshot
+  Bridge.Cache.Create("playerAppearance", function()
+    return Bridge.Clothing.GetAppearance(PlayerPedId())
+  end, 10000) -- Check every 10 seconds for a change in player appearance
+  
+  Bridge.Cache.OnChange('playerAppearance', function() -- When we detect a change update the mugshot take the player mugshot again
     TakePlayerMugshot()
   end)
 
