@@ -1,17 +1,16 @@
 --- @return string
 --- @description Gets the street name at the player's current coordinates
-function GetStreetName()
+local function GetStreetName()
   local ped = PlayerPedId()
   local coords = GetEntityCoords(ped)
   local streetCoords = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
-  local streetName = GetStreetNameFromHashKey(streetCoords)
 
-  return streetName
+  return GetStreetNameFromHashKey(streetCoords)
 end
 
 --- @return string
 --- @description Gets the current time in HH:MM formatted with AM/PM
-function GetCurrentTime()
+local function GetCurrentTime()
   local hours = GetClockHours()
   local minutes = GetClockMinutes()
 
@@ -78,10 +77,8 @@ end
 --- @description Shows or hides the minimap and clears street/time if hiding
 function DisplayMinimap(display)
   if display then
-    local streetName = GetStreetName()
-    local currentTime = GetCurrentTime()
     DisplayRadar(true)
-    SendReactMessage('displayMinimap', { displayMinimap=true, streetName=streetName, currentTime=currentTime })
+    SendReactMessage('displayMinimap', { displayMinimap=true, streetName=GetStreetName(), currentTime=GetCurrentTime() })
   else
     DisplayRadar(false)
     SendReactMessage('displayMinimap', { displayMinimap=false, streetName="", currentTime="" })

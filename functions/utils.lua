@@ -24,3 +24,27 @@ function SendIconConfigs()
     seatbeltIcon = Config.SeatbeltIcon
   })
 end
+
+--- @return nil
+--- @description Gets the player's full name and sends it to the NUI frame
+function GetPlayerName()
+  local firstName, lastName = Bridge.Framework.GetPlayerName()
+  local playerName = firstName .. " " .. lastName
+  if playerName then
+    SendReactMessage('setPlayerName', playerName)
+  else
+    print("Could not get player name")
+  end
+end
+
+--- @return nil
+--- @description Takes a mugshot of the player and sends it to the NUI frame
+function TakePlayerMugshot()
+  local mugShot = exports["MugShotBase64"]:GetMugShotBase64(PlayerPedId(), false)
+
+  if mugShot and mugShot ~= "" then
+    SendReactMessage('setPlayerMugshot', mugShot)
+  else
+    print("Mugshot is empty, not sending to NUI")
+  end
+end

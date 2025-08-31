@@ -1,5 +1,6 @@
 Config = {}
 
+-- Vehicle Settings
 Config.ShowMinimapAlways = false  -- Set to true to always show minimap, false to only show in vehicles
 Config.SpeedMeasurement = 'mph'  -- Set to 'mph' for miles per hour or 'kph' for kilometers per hour
 

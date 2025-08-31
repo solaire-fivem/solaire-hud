@@ -17,5 +17,4 @@ end, false)
 --- @description Command to reset HUD positions
 RegisterCommand('resethud', function()
     ResetHudPositions()
-    print("HUD Positions have now been reset to defaults!")
 end, false)

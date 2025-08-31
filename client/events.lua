@@ -9,9 +9,7 @@ RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
   SendReactMessage('setVisible', true)
   TakePlayerMugshot()
 
-  if cacheCreated then
-    return
-  end
+  if cacheCreated then return end
 
   cacheCreated = true
 
