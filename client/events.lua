@@ -23,6 +23,11 @@ RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
 
 end)
 
+RegisterNetEvent('community_bridge:Client:OnPlayerUnload', function()
+  SendReactMessage('setVisible', false)
+  DisplayMinimap(false)
+end)
+
 RegisterNUICallback('savePositions', function(data, cb)
   SaveHudPositions(data)
   cb('ok')

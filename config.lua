@@ -4,6 +4,9 @@ Config = {}
 Config.ShowMinimapAlways = false  -- Set to true to always show minimap, false to only show in vehicles
 Config.SpeedMeasurement = 'mph'  -- Set to 'mph' for miles per hour or 'kph' for kilometers per hour
 
+-- Character Sheet Settings
+Config.OpenCharacterSheet = "INSERT"
+
 --- https://fontawesome.com/icons Feel free to set the icons in the HUD to your server's style
 -- Status Bar
 Config.HealthBarIcon = 'fas fa-heart'  

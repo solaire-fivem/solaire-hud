@@ -18,3 +18,16 @@ end, false)
 RegisterCommand('resethud', function()
     ResetHudPositions()
 end, false)
+
+
+RegisterCommand('charactersheet', function()
+    if CharacterSheetOpen then
+        CloseCharacterSheet()
+        CharacterSheetOpen = false
+    else
+        DisplayCharacterSheet()
+        CharacterSheetOpen = true
+    end
+end, false)
+
+RegisterKeyMapping('charactersheet', 'Open/Close Character Sheet', 'keyboard', Config.OpenCharacterSheet)

@@ -9,6 +9,7 @@ import { useNuiEvent } from "../hooks/useNuiEvent";
 import { fetchNui } from "../utils/fetchNui";
 import { IconConfigs } from "../types/iconconfigs";
 import { Position, HudPositions, EditModeData } from "../types/hudeditor";
+import CharacterSheet from "./CharacterSheet/CharacterSheet";
 
 if (import.meta.env.MODE === "development") { // If we are in the browser let's show all the UI so we can actually see what we are doing
   debugData(
@@ -25,7 +26,7 @@ if (import.meta.env.MODE === "development") { // If we are in the browser let's 
 const App: React.FC = () => {
   const isDev = import.meta.env.MODE === "development";
   const [vehicleSpeed, setVehicleSpeed] = useState(0);
-  const [speedUnit, setSpeedUnit] = useState<'MPH' | 'KM/H'>('MPH');
+  const [speedUnit, setSpeedUnit] = useState<'MPH' | 'KM/H'>("MPH");
   const [inVehicle, setInVehicle] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [icons, setIcons] = useState<IconConfigs>({
@@ -44,8 +45,13 @@ const App: React.FC = () => {
     speedometer: { x: window.innerWidth - 180, y: window.innerHeight - 180 }
   });
 
-  const [forceShowMinimap, setForceShowMinimap] = useState(false);
+  const [forceShowMinimap, setForceShowMinimap] = useState(isDev ? true : false);
   const [forceShowVehicleHud, setForceShowVehicleHud] = useState(false);
+  const [characterSheetVisible, setCharacterSheetVisible] = useState(isDev ? true : false);
+
+  useNuiEvent<boolean>("characterSheetVisible", (visible) => {
+    setCharacterSheetVisible(!!visible);
+  });
 
   useNuiEvent<{
     vehicleFuel?: number,
@@ -109,7 +115,7 @@ const App: React.FC = () => {
 
   const getDefaultPositions = () => {
     return {
-      playerHud: { x: 100, y: 20 },
+      playerHud: { x: 20, y: 20 },
       speedometer: { x: window.innerWidth - 180, y: window.innerHeight - 180 }
     };
   };
@@ -135,23 +141,25 @@ const App: React.FC = () => {
 
       <EditModeOverlay isVisible={editMode} />
 
-      <DraggableComponent
-        componentId="playerHud"
-        editMode={editMode}
-        initialPosition={currentPositions.playerHud}
-        onPositionChange={handlePositionChange}
-        style={{
-          transform: editMode ? 'scale(0.8)' : 'scale(0.8)',
-          transformOrigin: "top left",
-          width: "fit-content",
-        }}
-      >
-        <div className="flex">
-            <div className="z-10 w-full">
-              <PlayerStatusHud />
-            </div>
-        </div>
-      </DraggableComponent>
+      {!characterSheetVisible && (
+        <DraggableComponent
+          componentId="playerHud"
+          editMode={editMode}
+          initialPosition={currentPositions.playerHud}
+          onPositionChange={handlePositionChange}
+          style={{
+            transform: editMode ? 'scale(0.8)' : 'scale(0.8)',
+            transformOrigin: "top left",
+            width: "fit-content",
+          }}
+        >
+          <div className="flex">
+              <div className="z-10 w-full">
+                <PlayerStatusHud />
+              </div>
+          </div>
+        </DraggableComponent>
+      )}
 
       <div 
         style={{
@@ -165,18 +173,22 @@ const App: React.FC = () => {
         <Minimap forceShow={forceShowMinimap} />
       </div>
 
-      <DraggableComponent
-        componentId="speedometer"
-        editMode={editMode}
-        initialPosition={currentPositions.speedometer}
-        onPositionChange={handlePositionChange}
-      >
-        <VehicleSpeedDisplay 
-          speed={forceShowVehicleHud ? 85 : vehicleSpeed} 
-          unit={speedUnit} 
-          inVehicle={inVehicle || forceShowVehicleHud} 
-        />
-      </DraggableComponent>
+      {!characterSheetVisible && (inVehicle || forceShowVehicleHud || isDev) && (
+        <DraggableComponent
+          componentId="speedometer"
+          editMode={editMode}
+          initialPosition={currentPositions.speedometer}
+          onPositionChange={handlePositionChange}
+        >
+          <VehicleSpeedDisplay 
+            speed={forceShowVehicleHud || isDev ? 85 : vehicleSpeed} 
+            unit={speedUnit} 
+            inVehicle={inVehicle || forceShowVehicleHud} 
+          />
+        </DraggableComponent>
+      )}
+
+      <CharacterSheet characterSheetVisible={characterSheetVisible} />
     </>
   );
 };
