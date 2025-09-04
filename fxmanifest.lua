@@ -1,8 +1,8 @@
 fx_version "cerulean"
 
 description "An MMO inspired HUD"
-author "solaire"
-version '1.1.0'
+author "Solaire"
+version '1.2.0'
 repository 'https://github.com/solaire-fivem/solaire-hud'
 
 lua54 'yes'
@@ -16,7 +16,7 @@ shared_script "config.lua"
 client_scripts {
   "client/*",
   "functions/*",
-  "bridge.lua",
+  "shared.lua",
 }
 
 files {

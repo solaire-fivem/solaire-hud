@@ -38,9 +38,12 @@ const PlayerStatusHud: React.FC = () => {
     setStamina((previousValue) =>
       typeof data.stamina === "number" ? data.stamina : previousValue
     );
-    setHunger((prev) => (typeof data.hunger === "number" ? data.hunger : prev));
-    setThirst((prev) => (typeof data.thirst === "number" ? data.thirst : prev));
     setStress((prev) => (typeof data.stress === "number" ? data.stress : prev));
+  });
+
+  useNuiEvent<{ hunger?: number; thirst?: number }>("updateNeeds", (data) => {
+    if (typeof data.hunger === "number") setHunger(data.hunger);
+    if (typeof data.thirst === "number") setThirst(data.thirst);
   });
 
   useNuiEvent<boolean>("setPlayerDead", (dead) => {

@@ -1,12 +1,45 @@
 --- @return nil
+--- @param invisible boolean
+--- @description Sets the player's ped invisible or visible with a fade effect
+local function setPlayerInvisible(invisible)
+    local playerPed = PlayerPedId()
+    SetEntityCollision(playerPed, not invisible, not invisible)
+    FreezeEntityPosition(playerPed, invisible)
+    local step = 15
+    local waitTime = 15
+    if invisible then
+        local alpha = GetEntityAlpha(playerPed)
+        while alpha > 0 do
+            alpha = math.max(alpha - step, 0)
+            SetEntityAlpha(playerPed, alpha, false)
+            Wait(waitTime)
+        end
+        SetEntityVisible(playerPed, false, false)
+    else
+        SetEntityVisible(playerPed, true, false)
+        local alpha = GetEntityAlpha(playerPed)
+        while alpha < 255 do
+            alpha = math.min(alpha + step, 255)
+            SetEntityAlpha(playerPed, alpha, false)
+            Wait(waitTime)
+        end
+        SetEntityAlpha(playerPed, 255, false)
+    end
+end
+
+--- @return nil
 --- @description Pauses the game and display's the player's ped
 function DisplayCharacterSheet()
     -- To avoid camera issues let's not allow player's to do this when they are dead
     if Bridge.Framework.GetIsPlayerDead() then return end
 
-    -- Enable the pause menu and hide all of our HUD components
+    -- Make player invisible and wait for fade to finish
+    setPlayerInvisible(true)
+
+    -- Now enable the pause menu and hide all of our HUD components
     SetFrontendActive(true)
     SendReactMessage('characterSheetVisible', true)
+    SendReactMessage('updateNeeds', { hunger = HUNGER, thirst = THIRST })
 
     GetPlayerName()
 
@@ -39,11 +72,12 @@ end
 --- @return nil
 --- @description Closes the character sheet, removes blur and shows the hud again
 function CloseCharacterSheet()
-    SetEntityAlpha(PlayerPedId(), 255, false)
+    setPlayerInvisible(false)
     ReplaceHudColourWithRgba(117, 0, 0, 0, 183)
     SetFrontendActive(false)
     ClearTimecycleModifier()
     SendReactMessage('characterSheetVisible', false)
     TakePlayerMugshot()
     GetPlayerName()
+    SendReactMessage('updateNeeds', { hunger = HUNGER, thirst = THIRST })
 end

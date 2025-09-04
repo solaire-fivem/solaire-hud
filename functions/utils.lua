@@ -48,3 +48,19 @@ function TakePlayerMugshot()
     print("Mugshot is empty, not sending to NUI")
   end
 end
+
+--- @return nil
+--- @description A wrapped for debug messages, only prints if config debug is true
+function Debug(...)
+    if not Config.Debug then return end
+    local msg = '^2[DEBUG]:^0 '
+    for i, v in pairs({ ... }) do
+        if type(v) == 'table' then
+            msg = msg .. json.encode(v) .. '\t'
+        else
+            msg = msg .. tostring(v) .. '\t'
+        end
+    end
+    msg = msg
+    print(msg)
+end

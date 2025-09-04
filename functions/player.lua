@@ -1,22 +1,3 @@
-local hunger = 0
-local thirst = 0
-local stress = 0
-
---- @return table
---- @description Retrieves the player's hunger, thirst and stress
-local function RetrieveFrameworkValues()
-    if ESX then
-      TriggerEvent("esx_status:getStatus", 'hunger', function(status) hunger = (status.val / 1000000) * 100 end)
-      TriggerEvent("esx_status:getStatus", 'thirst', function(status) thirst = (status.val / 1000000) * 100 end)
-      return { hunger = hunger, thirst = thirst, stress = 0 }
-    else
-      hunger = Bridge.Framework.GetPlayerMetaData('hunger')
-      thirst = Bridge.Framework.GetPlayerMetaData('thirst')
-      stress = Bridge.Framework.GetPlayerMetaData('stress')
-      return { hunger = hunger, thirst = thirst, stress = stress}
-    end
-end
-
 --- @return number
 --- @description Calculates oxygen percentage while the player is underwater
 local function CalculateUnderwaterOxygen()
@@ -37,8 +18,7 @@ function UpdatePlayerStatus()
     local health = GetEntityHealth(ped) - 100
     local armor = GetPedArmour(ped)
     local stamina = math.floor(GetPlayerStamina(PlayerId()))
-    local frameworkValues = RetrieveFrameworkValues()
-
+    local stress = Bridge.Framework.GetPlayerMetaData('stress') or 0
     local oxygenPercent = 100
 
     if IsPedSwimmingUnderWater(ped) then oxygenPercent = CalculateUnderwaterOxygen() end
@@ -55,35 +35,9 @@ function UpdatePlayerStatus()
       health = health,
       armor = armor,
       stamina = stamina,
-      hunger = frameworkValues.hunger,
-      thirst = frameworkValues.thirst,
-      stress = frameworkValues.stress,
+      stress = stress,
       oxygen = oxygenPercent,
     }
 
     SendReactMessage('updatePlayerStats', playerStatus)
-end
-
---- @return nil
---- @description Gets the player's full name and sends it to the NUI frame
-function GetPlayerName()
-  local firstName, lastName = Bridge.Framework.GetPlayerName()
-  local playerName = firstName .. " " .. lastName
-  if playerName then
-    SendReactMessage('setPlayerName', playerName)
-  else
-    print("Could not get player name")
-  end
-end
-
---- @return nil
---- @description Takes a mugshot of the player and sends it to the NUI frame
-function TakePlayerMugshot()
-  local mugShot = exports["MugShotBase64"]:GetMugShotBase64(PlayerPedId(), false)
-
-  if mugShot and mugShot ~= "" then
-    SendReactMessage('setPlayerMugshot', mugShot)
-  else
-    print("Mugshot is empty, not sending to NUI")
-  end
 end

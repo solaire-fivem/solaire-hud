@@ -2,6 +2,7 @@
 local cacheCreated = false
 
 RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
+  Debug("Using framework:", Bridge.Framework.GetFrameworkName())
   CreateMinimap()
   GetPlayerName()
   SendIconConfigs()
@@ -16,11 +17,10 @@ RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
   Bridge.Cache.Create("playerAppearance", function()
     return Bridge.Clothing.GetAppearance(PlayerPedId())
   end, 10000) -- Check every 10 seconds for a change in player appearance
-  
+
   Bridge.Cache.OnChange('playerAppearance', function() -- When we detect a change update the mugshot take the player mugshot again
     TakePlayerMugshot()
   end)
-
 end)
 
 RegisterNetEvent('community_bridge:Client:OnPlayerUnload', function()
@@ -28,17 +28,28 @@ RegisterNetEvent('community_bridge:Client:OnPlayerUnload', function()
   DisplayMinimap(false)
 end)
 
-RegisterNUICallback('savePositions', function(data, cb)
-  SaveHudPositions(data)
-  cb('ok')
+-- Framework events to listen for hunger and thirst for the big 3 frameworks
+-- ESX
+RegisterNetEvent('esx_status:onTick', function(statuses)
+  local hunger, thirst = 0, 0
+  for _, status in pairs(statuses) do
+    if status.name == 'hunger' then
+      hunger = status.percent
+    elseif status.name == 'thirst' then
+      thirst = status.percent
+    end
+  end
+
+  Debug("'esx_status:onTick' Returned: Hunger:", hunger, "Thirst:", thirst)
+  HUNGER = hunger
+  THIRST = thirst
+  SendReactMessage('updateNeeds', { hunger = hunger, thirst = thirst })
 end)
 
-RegisterNUICallback('closeEditMode', function(data, cb)
-  ToggleHudEditMode()
-  cb('ok')
-end)
-
-RegisterNUICallback('resetPositions', function(data, cb)
-  ResetHudPositions()
-  cb('ok')
+-- QBCore / QBox
+RegisterNetEvent('hud:client:UpdateNeeds', function(hunger, thirst)
+  Debug("'hud:client:UpdateNeeds' Returned: Hunger:", hunger, "Thirst:", thirst)
+  HUNGER = hunger
+  THIRST = thirst
+  SendReactMessage('updateNeeds', { hunger = hunger, thirst = thirst })
 end)

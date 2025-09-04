@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNuiEvent } from "../../hooks/useNuiEvent";
-import { PlayerStats } from "../../types/playerhud";
 import { IconConfigs } from "../../types/iconconfigs";
 
 const CharacterSheetStatBars: React.FC = () => {
@@ -19,11 +18,9 @@ const CharacterSheetStatBars: React.FC = () => {
         seatbeltIcon: ''
     });
 
-    useNuiEvent<Partial<PlayerStats & { armor?: number }>>("updatePlayerStats", (data) => {
-        setHealth((prev) => typeof data.health === "number" ? Math.max(0, data.health) : prev);
-        setArmor((prev) => typeof data.armor === "number" ? Math.max(0, Math.min(100, data.armor)) : prev);
-        setHunger((prev) => typeof data.hunger === "number" ? data.hunger : prev);
-        setThirst((prev) => typeof data.thirst === "number" ? data.thirst : prev);
+    useNuiEvent<{ hunger?: number; thirst?: number }>("updateNeeds", (data) => {
+        if (typeof data.hunger === "number") setHunger(data.hunger);
+        if (typeof data.thirst === "number") setThirst(data.thirst);
     });
 
     useNuiEvent<IconConfigs>("setIcons", (iconConfigs) => {
