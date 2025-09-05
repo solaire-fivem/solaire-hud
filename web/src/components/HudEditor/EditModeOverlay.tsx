@@ -15,7 +15,7 @@ const EditModeOverlay: React.FC<EditModeOverlayProps> = ({ isVisible }) => {
   return (
     <div className="fixed mt-8 right-5 z-[10000] bg-gray-900 border-2 border-[#ab8e2c] rounded-lg p-4 text-white font-cinzel shadow-lg opacity-85 shadow-[#ab8e2c80]">
       <h3 className="m-0 mb-3 text-[#ab8e2c] text-2xl font-bold">
-        Hud Edit Mode
+        Edit Mode
       </h3>
       <p className="m-0 mb-4 text-md leading-relaxed">
         Drag components to reposition them.<br />

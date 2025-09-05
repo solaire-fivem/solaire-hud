@@ -3,7 +3,7 @@ import PlayerName from "../PlayerHud/PlayerName"
 const PlayerNameHeader: React.FC = () => {
     return (
         <div className="fixed inset-0 flex items-center justify-center mb-[40rem] z-50 pointer-events-none" >
-            <div className="bg-gray-900 bg-opacity-85 rounded-lg p-1 pl-2 pr-2 w-1/5 hud-glow flex items-center justify-center">
+            <div className="bg-gray-900 bg-opacity-85 rounded-lg p-1 pl-2 pr-2 w-1/4 hud-glow flex items-center justify-center">
                 <span className="w-full text-center text-3xl font-serif font-extrabold text-white drop-shadow-lg">
                     <PlayerName />
                 </span>

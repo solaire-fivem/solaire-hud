@@ -28,7 +28,7 @@ const CharacterSheetStatBars: React.FC = () => {
     });
 
     return (
-            <div className="rounded-lg w-1/3 p-5 flex justify-center items-center min-h-[70vh] ml-[59vh]">
+            <div className="rounded-lg w-1/3 p-5 flex justify-center items-center min-h-[50rem] ml-[40rem]">
                 <div className="grid grid-cols-2 grid-rows-2 gap-x-[24vh] gap-y-4">
                 {/* Health */}
                 <div className="flex items-center">

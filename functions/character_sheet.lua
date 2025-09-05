@@ -31,15 +31,14 @@ end
 --- @description Pauses the game and display's the player's ped
 function DisplayCharacterSheet()
     -- To avoid camera issues let's not allow player's to do this when they are dead
-    if Bridge.Framework.GetIsPlayerDead() then return end
-
-    -- Make player invisible and wait for fade to finish
-    setPlayerInvisible(true)
+    if Bridge.Framework.GetIsPlayerDead() or GetVehiclePedIsIn(PlayerPedId(), false) == 1 then return end
 
     -- Now enable the pause menu and hide all of our HUD components
     SetFrontendActive(true)
-    SendReactMessage('characterSheetVisible', true)
-    SendReactMessage('updateNeeds', { hunger = HUNGER, thirst = THIRST })
+
+    -- Show the character sheet and get the hunger and thirst values
+    SendNUIMessage({ action = 'characterSheetVisible', data = true })
+    SendNUIMessage({ action = 'updateNeeds', data = { hunger = HUNGER, thirst = THIRST } })
 
     GetPlayerName()
 
@@ -60,7 +59,8 @@ function DisplayCharacterSheet()
     SetEntityVisible(clonedPed, false, false)
     NetworkSetEntityInvisibleToNetwork(clonedPed, false)
 
-    Wait(100)
+    -- Make player invisible and wait for fade to finish
+    setPlayerInvisible(true)
 
     SetPedAsNoLongerNeeded(clonedPed)
     SetEntityAlpha(PlayerPedId(), 0, false) -- This is the best way I have found to do this
@@ -76,8 +76,8 @@ function CloseCharacterSheet()
     ReplaceHudColourWithRgba(117, 0, 0, 0, 183)
     SetFrontendActive(false)
     ClearTimecycleModifier()
-    SendReactMessage('characterSheetVisible', false)
+    SendNUIMessage({ action = 'characterSheetVisible', data = false })
     TakePlayerMugshot()
     GetPlayerName()
-    SendReactMessage('updateNeeds', { hunger = HUNGER, thirst = THIRST })
+    SendNUIMessage({ action = 'updateNeeds', data = { hunger = HUNGER, thirst = THIRST } })
 end

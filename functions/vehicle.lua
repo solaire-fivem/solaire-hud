@@ -9,7 +9,7 @@ local function GetVehicleSpeed(vehicle)
   elseif Config.SpeedMeasurement == 'kph' then
       return math.floor(speed * 3.6)
   else
-      print("Unsupported speed measurement in config.lua, defaulting to mph")
+      Debug("Unsupported speed measurement in config.lua, defaulting to mph")
       return math.floor(speed * 2.236936)
   end
 end
@@ -44,18 +44,17 @@ function UpdateVehicleHud()
     if not Config.ShowMinimapAlways then -- If they have this off then we want to show the minimap when entering a vehicle
       DisplayMinimap(true)
     end
-    SendReactMessage('updateVehicleHud', 
-    {
+    SendNUIMessage({ action = 'updateVehicleHud', data = {
       vehicleFuel = currentFuel,
       seatbelt = seatbeltState,
       vehicleSpeed = vehicleSpeed,
       inVehicle = true,
       speedUnit = speedUnit,
-    })
+    }})
   else
     if not Config.ShowMinimapAlways then -- If they have this off then we want to hide the minimap on vehicle exit
       DisplayMinimap(false)
     end
-    SendReactMessage('updateVehicleHud', { inVehicle = false })
+    SendNUIMessage({ action = 'updateVehicleHud', data = { inVehicle = false } })
   end
 end

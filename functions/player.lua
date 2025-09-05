@@ -3,7 +3,7 @@
 local function CalculateUnderwaterOxygen()
   local underwaterTime = GetPlayerUnderwaterTimeRemaining(PlayerId())
   if underwaterTime < 0 then return 0 end
-  
+
   local maxUnderwaterTime = 10.0
   return math.floor((underwaterTime / maxUnderwaterTime) * 100)
 end
@@ -11,9 +11,9 @@ end
 --- @return nil
 --- @description Updates the player's stats and sends them to the NUI frame
 function UpdatePlayerStatus()
-    if Bridge.Framework.GetIsPlayerDead() then SendReactMessage('setPlayerDead', true) return end
-      
-    SendReactMessage('setPlayerDead', false)
+    if Bridge.Framework.GetIsPlayerDead() then SendNUIMessage({'setPlayerDead', true}) return end
+
+    SendNUIMessage({'setPlayerDead', false})
     local ped = PlayerPedId()
     local health = GetEntityHealth(ped) - 100
     local armor = GetPedArmour(ped)
@@ -39,5 +39,5 @@ function UpdatePlayerStatus()
       oxygen = oxygenPercent,
     }
 
-    SendReactMessage('updatePlayerStats', playerStatus)
+    SendNUIMessage({ action = 'updatePlayerStats', data = playerStatus })
 end

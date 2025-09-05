@@ -5,14 +5,14 @@ local isEditMode = false
 --- @description Toggles HUD edit mode for repositioning components
 function ToggleHudEditMode()
   isEditMode = not isEditMode
-  
+
   if isEditMode then
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(false)
-    SendReactMessage('setEditMode', { editMode = true })
+    SendNUIMessage({ action = 'setEditMode', data = { editMode = true } })
   else
     SetNuiFocus(false, false)
-    SendReactMessage('setEditMode', { editMode = false })
+    SendNUIMessage({ action = 'setEditMode', data = { editMode = false } })
   end
 end
 
@@ -36,7 +36,7 @@ end
 function SendSavedPositions()
   local positions = LoadHudPositions()
   if positions then
-    SendReactMessage('loadPositions', positions)
+    SendNUIMessage({ action = 'loadPositions', data = positions })
   end
 end
 
@@ -44,5 +44,5 @@ end
 --- @description Resets HUD positions to default and clears KVP storage
 function ResetHudPositions()
   DeleteResourceKvp('solaire-hud:positions')
-  SendReactMessage('resetToDefaults', true)
+  SendNUIMessage({ action = 'resetToDefaults', data = true })
 end

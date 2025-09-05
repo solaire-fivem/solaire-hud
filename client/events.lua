@@ -7,8 +7,8 @@ RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
   GetPlayerName()
   SendIconConfigs()
   SendSavedPositions()
-  SendReactMessage('setVisible', true)
   TakePlayerMugshot()
+  SendNUIMessage({ action = 'setVisible', data = true })
 
   if cacheCreated then return end
 
@@ -24,32 +24,34 @@ RegisterNetEvent('community_bridge:Client:OnPlayerLoaded', function()
 end)
 
 RegisterNetEvent('community_bridge:Client:OnPlayerUnload', function()
-  SendReactMessage('setVisible', false)
+  SendNUIMessage({ action = 'setVisible', data = false })
   DisplayMinimap(false)
 end)
 
 -- Framework events to listen for hunger and thirst for the big 3 frameworks
 -- ESX
 RegisterNetEvent('esx_status:onTick', function(statuses)
-  local hunger, thirst = 0, 0
   for _, status in pairs(statuses) do
     if status.name == 'hunger' then
-      hunger = status.percent
+      HUNGER = status.percent
     elseif status.name == 'thirst' then
-      thirst = status.percent
+      THIRST = status.percent
     end
   end
 
-  Debug("'esx_status:onTick' Returned: Hunger:", hunger, "Thirst:", thirst)
-  HUNGER = hunger
-  THIRST = thirst
-  SendReactMessage('updateNeeds', { hunger = hunger, thirst = thirst })
+  Debug("'esx_status:onTick' Returned: Hunger:", HUNGER, "Thirst:", THIRST)
+  SendNUIMessage({ action = 'updateNeeds', data = { hunger = HUNGER, thirst = THIRST } })
 end)
 
 -- QBCore / QBox
 RegisterNetEvent('hud:client:UpdateNeeds', function(hunger, thirst)
-  Debug("'hud:client:UpdateNeeds' Returned: Hunger:", hunger, "Thirst:", thirst)
+  Debug("'hud:client:UpdateNeeds' Needs updated called: Hunger:", hunger, "Thirst:", thirst)
   HUNGER = hunger
   THIRST = thirst
-  SendReactMessage('updateNeeds', { hunger = hunger, thirst = thirst })
+
+  -- Hunger goes all the way to 120 in qb-core so we need to cap it at 100
+  if HUNGER > 100 then HUNGER = 100 end
+  if THIRST > 100 then THIRST = 100 end
+
+  SendNUIMessage({ action = 'updateNeeds', data = { hunger = HUNGER, thirst = THIRST } })
 end)

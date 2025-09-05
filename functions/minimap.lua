@@ -22,12 +22,12 @@ local function GetCurrentTime()
       hours = hours - 12
     end
   end
-  
+
   -- Handle midnight (0 hours)
   if hours == 0 then
     hours = 12
   end
-  
+
   return string.format("%d:%02d %s", hours, minutes, ampm)
 end
 
@@ -78,9 +78,9 @@ end
 function DisplayMinimap(display)
   if display then
     DisplayRadar(true)
-    SendReactMessage('displayMinimap', { displayMinimap=true, streetName=GetStreetName(), currentTime=GetCurrentTime() })
+    SendNUIMessage({ action = 'displayMinimap', data = { displayMinimap=true, streetName=GetStreetName(), currentTime=GetCurrentTime() } })
   else
     DisplayRadar(false)
-    SendReactMessage('displayMinimap', { displayMinimap=false, streetName="", currentTime="" })
+    SendNUIMessage({ action = 'displayMinimap', data = { displayMinimap=false, streetName="", currentTime="" } })
   end
 end

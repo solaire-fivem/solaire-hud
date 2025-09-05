@@ -11,16 +11,15 @@ import { IconConfigs } from "../types/iconconfigs";
 import { Position, HudPositions, EditModeData } from "../types/hudeditor";
 import CharacterSheet from "./CharacterSheet/CharacterSheet";
 
-if (import.meta.env.MODE === "development") { // If we are in the browser let's show all the UI so we can actually see what we are doing
-  debugData(
-    [
-      {
-        action: "setVisible",
-        data: true,
-      },
-    ],
-    100
-  );
+const DEFAULT_HUD_POSITIONS: HudPositions = {
+  playerHud: { x: 20, y: 40 },
+  speedometer: { x: window.innerWidth - 180, y: window.innerHeight - 180 }
+};
+
+if (import.meta.env.MODE === "development") {
+  debugData([
+    { action: "setVisible", data: true },
+  ], 100);
 }
 
 const App: React.FC = () => {
@@ -39,39 +38,28 @@ const App: React.FC = () => {
     fuelIcon: 'fas fa-gas-pump',
     seatbeltIcon: 'fas fa-user-slash'
   });
-
-  const [hudPositions, setHudPositions] = useState<HudPositions>({
-    playerHud: { x: 0, y: 0 },
-    speedometer: { x: window.innerWidth - 180, y: window.innerHeight - 180 }
-  });
-
+  const [hudPositions, setHudPositions] = useState<HudPositions>(DEFAULT_HUD_POSITIONS);
   const [forceShowMinimap, setForceShowMinimap] = useState(isDev ? true : false);
   const [forceShowVehicleHud, setForceShowVehicleHud] = useState(false);
   const [characterSheetVisible, setCharacterSheetVisible] = useState(isDev ? true : false);
+    const handlePositionChange = (componentId: string, position: Position) => {
+    const newPositions = { ...hudPositions, [componentId]: position };
+    setHudPositions(newPositions);
+    fetchNui('savePositions', newPositions);
+  };
+  const currentPositions = isDev ? DEFAULT_HUD_POSITIONS : hudPositions;
 
   useNuiEvent<boolean>("characterSheetVisible", (visible) => {
     setCharacterSheetVisible(!!visible);
   });
-
-  useNuiEvent<{
-    vehicleFuel?: number,
-    seatbelt?: boolean,
-    vehicleSpeed?: number,
-    inVehicle?: boolean,
-    speedUnit?: 'MPH' | 'KM/H'
-  }>("updateVehicleHud", (data) => {
+  useNuiEvent<{ vehicleFuel?: number, seatbelt?: boolean, vehicleSpeed?: number, inVehicle?: boolean, speedUnit?: 'MPH' | 'KM/H' }>("updateVehicleHud", (data) => {
     if (typeof data.vehicleSpeed === 'number') setVehicleSpeed(data.vehicleSpeed);
     if (typeof data.inVehicle === 'boolean') setInVehicle(data.inVehicle);
     if (data.speedUnit === 'MPH' || data.speedUnit === 'KM/H') setSpeedUnit(data.speedUnit);
   });
-
   useNuiEvent<IconConfigs>("setIcons", (iconConfigs) => {
-    setIcons(prev => ({
-      ...prev,
-      ...iconConfigs
-    }));
+    setIcons(prev => ({ ...prev, ...iconConfigs }));
   });
-
   useNuiEvent<EditModeData>("setEditMode", (data) => {
     setEditMode(data.editMode);
     if (data.editMode) {
@@ -82,47 +70,12 @@ const App: React.FC = () => {
       setForceShowVehicleHud(false);
     }
   });
-
   useNuiEvent<HudPositions>("loadPositions", (positions) => {
-    setHudPositions(prev => {
-      const newPositions = {
-        ...prev,
-        ...positions
-      };
-      
-      return newPositions;
-    });
+    setHudPositions(prev => ({ ...prev, ...positions }));
   });
-
   useNuiEvent<boolean>("resetToDefaults", () => {
-    const defaultPositions = {
-      playerHud: { x: 0, y: 40 },
-      speedometer: { x: window.innerWidth - 180, y: window.innerHeight - 180 }
-    };
-    
-    setHudPositions(defaultPositions);
+    setHudPositions(DEFAULT_HUD_POSITIONS);
   });
-
-  const handlePositionChange = (componentId: string, position: Position) => {
-    const newPositions = {
-      ...hudPositions,
-      [componentId]: position
-    };
-    setHudPositions(newPositions);
-    
-    fetchNui('savePositions', newPositions);
-  };
-
-  const getDefaultPositions = () => {
-    return {
-      playerHud: { x: 20, y: 20 },
-      speedometer: { x: window.innerWidth - 180, y: window.innerHeight - 180 }
-    };
-  };
-
-  const currentPositions = isDev
-    ? getDefaultPositions()
-    : (editMode ? { ...getDefaultPositions(), ...hudPositions } : hudPositions);
 
   return (
     <>
@@ -141,27 +94,27 @@ const App: React.FC = () => {
 
       <EditModeOverlay isVisible={editMode} />
 
-      {!characterSheetVisible && (
+      {(!characterSheetVisible || isDev) && (
         <DraggableComponent
           componentId="playerHud"
           editMode={editMode}
           initialPosition={currentPositions.playerHud}
           onPositionChange={handlePositionChange}
           style={{
-            transform: editMode ? 'scale(0.8)' : 'scale(0.8)',
+            transform: 'scale(0.8)',
             transformOrigin: "top left",
             width: "fit-content",
           }}
         >
           <div className="flex">
-              <div className="z-10 w-full">
-                <PlayerStatusHud />
-              </div>
+            <div className="z-10 w-full">
+              <PlayerStatusHud />
+            </div>
           </div>
         </DraggableComponent>
       )}
 
-      <div 
+      <div
         style={{
           position: 'absolute',
           left: `${window.innerWidth * 0.02}px`,
@@ -180,10 +133,10 @@ const App: React.FC = () => {
           initialPosition={currentPositions.speedometer}
           onPositionChange={handlePositionChange}
         >
-          <VehicleSpeedDisplay 
-            speed={forceShowVehicleHud || isDev ? 85 : vehicleSpeed} 
-            unit={speedUnit} 
-            inVehicle={inVehicle || forceShowVehicleHud} 
+          <VehicleSpeedDisplay
+            speed={forceShowVehicleHud || isDev ? 85 : vehicleSpeed}
+            unit={speedUnit}
+            inVehicle={inVehicle || forceShowVehicleHud}
           />
         </DraggableComponent>
       )}
